@@ -1,11 +1,10 @@
 package com.sam43.forecastmvvm.interfaces
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.sam43.forecastmvvm.data.CurrentWeather
+import com.sam43.forecastmvvm.data.network.response.CurrentWeatherResponse
 import kotlinx.coroutines.Deferred
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -13,11 +12,11 @@ import retrofit2.http.Query
 
 interface WeatherServices {
 
-    @GET("current.json")
+    @GET("currentWeatherEntry.json")
     fun getCurrentWeatherAsync(
         @Query("lang") lang: String? = "en",
         @Query("q") location: String? = ""
-    ) : Deferred<CurrentWeather>
+    ): Deferred<CurrentWeatherResponse>
 
     companion object {
         operator fun invoke(): WeatherServices {
