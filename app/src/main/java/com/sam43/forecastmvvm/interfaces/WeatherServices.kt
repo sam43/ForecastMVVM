@@ -1,6 +1,7 @@
 package com.sam43.forecastmvvm.interfaces
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.sam43.forecastmvvm.data.network.ConnectivityInterceptor
 import com.sam43.forecastmvvm.data.network.response.CurrentWeatherResponse
 import kotlinx.coroutines.Deferred
 import okhttp3.Interceptor
@@ -19,7 +20,7 @@ interface WeatherServices {
     ): Deferred<CurrentWeatherResponse>
 
     companion object {
-        operator fun invoke(): WeatherServices {
+        operator fun invoke(connectivityInterceptor: ConnectivityInterceptor): WeatherServices {
             val requestInterceptor = Interceptor {
                 val url = it.request()
                     .url()
@@ -36,6 +37,7 @@ interface WeatherServices {
 
             val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(requestInterceptor)
+                .addInterceptor(connectivityInterceptor)
                 .build()
 
             return Retrofit.Builder()
